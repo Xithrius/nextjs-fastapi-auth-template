@@ -38,7 +38,7 @@ test = [
 ]
 
 [tool.pdm.scripts]
-start = "uvicorn app.run:main"
+start = "python3 -m app"
 lint = "pre-commit run --all-files"
 precommit = "pre-commit install"
 migrate = "alembic revision --autogenerate -m"
