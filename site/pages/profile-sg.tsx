@@ -1,7 +1,5 @@
-import React from "react";
-import Layout from "components/Layout";
-import useUser from "lib/useUser";
-import Link from "next/link";
+import DefaultLayout from "@/layouts/default";
+import useUser from "@/lib/useUser";
 
 export default function SgProfile() {
   const { user } = useUser({
@@ -9,25 +7,14 @@ export default function SgProfile() {
   });
 
   return (
-    <Layout>
-      <h1>Your GitHub profile</h1>
-      <h2>
-        This page uses{" "}
-        <Link href="https://nextjs.org/docs/basic-features/pages#static-generation-recommended">
-          Static Generation (SG)
-        </Link>{" "}
-        and the <Link href="/api/user">/api/user</Link> route (using{" "}
-        <Link href="https://github.com/vercel/swr">vercel/SWR</Link>)
-      </h2>
-      {user && (
-        <>
-          <p style={{ fontStyle: "italic" }}>
-            Public data, from , reduced to `login` and `avatar_url`.
-          </p>
-
-          <pre>{JSON.stringify(user, null, 2)}</pre>
-        </>
-      )}
-    </Layout>
+    <DefaultLayout>
+      <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
+        <div className="inline-block max-w-lg text-start justify-center">
+          <div className="mt-8 overflow-auto">
+            <pre>{JSON.stringify(user, null, 2)}</pre>
+          </div>
+        </div>
+      </section>
+    </DefaultLayout>
   );
 }

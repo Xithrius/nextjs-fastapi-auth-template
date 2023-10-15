@@ -2,8 +2,8 @@ import axios from "axios";
 import type { User } from "./user";
 
 import { withIronSessionApiRoute } from "iron-session/next";
-import { sessionOptions } from "lib/session";
 import { NextApiRequest, NextApiResponse } from "next";
+import { sessionOptions } from "@/lib/session";
 
 const getUserInfo = async (access_token: string) => {
   const headers = {
