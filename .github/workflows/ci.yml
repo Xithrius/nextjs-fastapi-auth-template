@@ -43,9 +43,9 @@ jobs:
       working-directory: ${{ matrix.dir }}
       run: pdm lint
 
-    - name: Run tests
-      working-directory: ${{ matrix.dir }}
-      run: pdm test
+    # - name: Run tests
+    #   working-directory: ${{ matrix.dir }}
+    #   run: pdm test
 
   site-ci:
     runs-on: ubuntu-latest

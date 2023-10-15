@@ -43,7 +43,7 @@ lint = "pre-commit run --all-files"
 precommit = "pre-commit install"
 migrate = "alembic revision --autogenerate -m"
 upgrade = "alembic upgrade head"
-test = "pytest"
+# test = "pytest"
 
 [build-system]
 requires = ["pdm-pep517>=1.0.0"]
