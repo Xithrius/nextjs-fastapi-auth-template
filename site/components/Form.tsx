@@ -1,17 +1,22 @@
-import { FormEvent } from 'react'
+import { FormEvent } from "react";
 
 export default function Form({
   errorMessage,
   onSubmit,
 }: {
-  errorMessage: string
-  onSubmit: (e: FormEvent<HTMLFormElement>) => void
+  errorMessage: string;
+  onSubmit: (e: FormEvent<HTMLFormElement>) => void;
 }) {
   return (
     <form onSubmit={onSubmit}>
       <label>
-        <span>Type your GitHub username</span>
-        <input type="text" name="username" required />
+        <span>Email</span>
+        <input type="text" name="email" required />
+      </label>
+
+      <label>
+        <span>Password</span>
+        <input type="password" name="password" required />
       </label>
 
       <button type="submit">Login</button>
@@ -39,5 +44,5 @@ export default function Form({
         }
       `}</style>
     </form>
-  )
+  );
 }

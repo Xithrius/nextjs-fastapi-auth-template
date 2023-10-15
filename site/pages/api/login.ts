@@ -1,26 +1,61 @@
-import type { User } from './user'
+import axios from "axios";
+import type { User } from "./user";
 
-import { Octokit } from 'octokit'
-import { withIronSessionApiRoute } from 'iron-session/next'
-import { sessionOptions } from 'lib/session'
-import { NextApiRequest, NextApiResponse } from 'next'
-const octokit = new Octokit()
+import { withIronSessionApiRoute } from "iron-session/next";
+import { sessionOptions } from "lib/session";
+import { NextApiRequest, NextApiResponse } from "next";
+
+const getUserInfo = async (access_token: string) => {
+  const headers = {
+    Authorization: `Bearer ${access_token}`,
+  };
+
+  const response = await axios.get("http://localhost:8000/api/users/me", {
+    headers,
+  });
+
+  const { id } = response.data;
+
+  return id;
+};
 
 async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
-  const { username } = await req.body
+  const { email, password } = await req.body;
 
   try {
-    const {
-      data: { login, avatar_url },
-    } = await octokit.rest.users.getByUsername({ username })
+    const form = new URLSearchParams();
+    form.append("username", email);
+    form.append("password", password);
 
-    const user = { isLoggedIn: true, login, avatarUrl: avatar_url } as User
-    req.session.user = user
-    await req.session.save()
-    res.json(user)
+    const response = await axios.post(
+      "http://localhost:8000/api/auth/jwt/login",
+      form,
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
+
+    const { access_token } = response.data;
+
+    const user_id = await getUserInfo(access_token);
+
+    const user = {
+      isLoggedIn: true,
+      email: email,
+      access_token: access_token,
+      user_id: user_id,
+    } as User;
+
+    req.session.user = user;
+
+    await req.session.save();
+
+    res.json(user);
   } catch (error) {
-    res.status(500).json({ message: (error as Error).message })
+    res.status(500).json({ message: (error as Error).message });
   }
 }
 
-export default withIronSessionApiRoute(loginRoute, sessionOptions)
+export default withIronSessionApiRoute(loginRoute, sessionOptions);

@@ -7,7 +7,7 @@ x-logging: &logging
       max-file: "5"
       max-size: "10m"
 
-x-restart-policy: &restart_policy
+x-restart-policy:
   restart: unless-stopped
 
 services:
@@ -19,7 +19,7 @@ services:
     image: postgres:15-alpine
 
     ports:
-      - "5432:5432"
+    - "5432:5432"
 
     environment:
       POSTGRES_DB: template
@@ -40,4 +40,4 @@ services:
     image: adminer:latest
 
     ports:
-      - "8080:8080"
+    - "8080:8080"

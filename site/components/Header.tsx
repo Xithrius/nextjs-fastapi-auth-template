@@ -1,12 +1,12 @@
-import Link from 'next/link'
-import useUser from 'lib/useUser'
-import { useRouter } from 'next/router'
-import Image from 'next/image'
-import fetchJson from 'lib/fetchJson'
+import Link from "next/link";
+import useUser from "lib/useUser";
+import { useRouter } from "next/router";
+import Image from "next/image";
+import fetchJson from "lib/fetchJson";
 
 export default function Header() {
-  const { user, mutateUser } = useUser()
-  const router = useRouter()
+  const { user, mutateUser } = useUser();
+  const router = useRouter();
 
   return (
     <header>
@@ -31,19 +31,12 @@ export default function Header() {
                   <a>
                     <span
                       style={{
-                        marginRight: '.3em',
-                        verticalAlign: 'middle',
-                        borderRadius: '100%',
-                        overflow: 'hidden',
+                        marginRight: ".3em",
+                        verticalAlign: "middle",
+                        borderRadius: "100%",
+                        overflow: "hidden",
                       }}
-                    >
-                      <Image
-                        src={user.avatarUrl}
-                        width={32}
-                        height={32}
-                        alt=""
-                      />
-                    </span>
+                    ></span>
                     Profile (Static Generation, recommended)
                   </a>
                 </Link>
@@ -54,19 +47,19 @@ export default function Header() {
                 </Link>
               </li>
               <li>
-                <a
+                <Link
                   href="/api/logout"
                   onClick={async (e) => {
-                    e.preventDefault()
+                    e.preventDefault();
                     mutateUser(
-                      await fetchJson('/api/logout', { method: 'POST' }),
+                      await fetchJson("/api/logout", { method: "POST" }),
                       false
-                    )
-                    router.push('/login')
+                    );
+                    router.push("/login");
                   }}
                 >
                   Logout
-                </a>
+                </Link>
               </li>
             </>
           )}
@@ -117,5 +110,5 @@ export default function Header() {
         }
       `}</style>
     </header>
-  )
+  );
 }

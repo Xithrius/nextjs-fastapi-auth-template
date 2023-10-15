@@ -3,7 +3,7 @@ name: CI
 on:
   push:
     branches:
-      - main
+    - main
   pull_request:
 
 concurrency:
@@ -17,7 +17,7 @@ jobs:
     strategy:
       fail-fast: false
 
-      matrix: { dir: ["api"] }
+      matrix: {dir: ["api"]}
 
     steps:
     - name: Checkout repository
@@ -53,21 +53,21 @@ jobs:
     strategy:
       fail-fast: false
 
-      matrix: { dir: ["site"] }
+      matrix: {dir: ["site"]}
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: Install Node v20
-        uses: actions/setup-node@v2
-        with:
-          node-version: 20
+    - name: Install Node v20
+      uses: actions/setup-node@v2
+      with:
+        node-version: 20
 
-      - name: Install dependencies
-        working-directory: ${{ matrix.dir }}
-        run: yarn install
+    - name: Install dependencies
+      working-directory: ${{ matrix.dir }}
+      run: yarn install
 
-      - name: Install dependencies
-        working-directory: ${{ matrix.dir }}
-        run: yarn lint
+    - name: Install dependencies
+      working-directory: ${{ matrix.dir }}
+      run: yarn lint
