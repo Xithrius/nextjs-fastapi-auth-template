@@ -1,0 +1,126 @@
+[project]
+name = "template-api"
+version = "0.1.0"
+description = "..."
+authors = [{ name = "Xithrius", email = "xithrius@gmail.com" }]
+requires-python = ">=3.11"
+license = { text = "MIT" }
+dependencies = [
+    "fastapi>=0.100.0",
+    "uvicorn[standard]>=0.22.0",
+    "gunicorn>=21.2.0",
+    "fastapi-users[sqlalchemy]>=12.1.2",
+    "httpx-oauth>=0.10.2",
+    "pydantic>=2",
+    "pydantic-settings>=2",
+    "yarl>=1.9.2",
+    "ujson>=5.8.0",
+    "sqlalchemy[asyncio]>=2.0.18",
+    "alembic>=1.11.1",
+    "asyncpg>=0.28.0",
+    "httptools>=0.6.0",
+    "prometheus-client>=0.17.0",
+    "prometheus-fastapi-instrumentator>=6.0.0",
+]
+
+[tool]
+[tool.pdm]
+[tool.pdm.dev-dependencies]
+lint = ["ruff>=0.0.285"]
+format = ["black>=23.7.0"]
+precommit = ["pre-commit>=3.3.3"]
+test = [
+    "pytest>=7.4.0",
+    "anyio>=3.7.1",
+    "pytest-cov>=4.1.0",
+    "pytest-env>=1.0.1",
+    "pytest-xdist>=3.3.1",
+]
+
+[tool.pdm.scripts]
+start = "uvicorn app.run:main"
+lint = "pre-commit run --all-files"
+precommit = "pre-commit install"
+migrate = "alembic revision --autogenerate -m"
+upgrade = "alembic upgrade head"
+test = "pytest"
+
+[build-system]
+requires = ["pdm-pep517>=1.0.0"]
+build-backend = "pdm.pep517.api"
+
+[tool.ruff]
+target-version = "py311"
+extend-exclude = [".cache"]
+ignore = [
+    "ANN002",
+    "ANN003",
+    "ANN101",
+    "ANN102",
+    "ANN204",
+    "ANN206",
+    "ANN401",
+    "B904",
+    "C401",
+    "C408",
+    "D100",
+    "D101",
+    "D102",
+    "D103",
+    "D104",
+    "D105",
+    "D106",
+    "D107",
+    "D203",
+    "D212",
+    "D214",
+    "D215",
+    "D301",
+    "D400",
+    "D401",
+    "D402",
+    "D404",
+    "D405",
+    "D406",
+    "D407",
+    "D408",
+    "D409",
+    "D410",
+    "D411",
+    "D412",
+    "D413",
+    "D414",
+    "D416",
+    "D417",
+    "E731",
+    "RET504",
+    "RUF005",
+    "S101",
+    "S311",
+    "SIM102",
+    "SIM108",
+]
+line-length = 120
+select = [
+    "ANN",
+    "B",
+    "C4",
+    "D",
+    "DTZ",
+    "E",
+    "F",
+    "ISC",
+    "N",
+    "PGH",
+    "PIE",
+    "Q",
+    "RET",
+    "RSE",
+    "RUF",
+    "S",
+    "SIM",
+    "T20",
+    "TID",
+    "UP",
+    "W",
+]

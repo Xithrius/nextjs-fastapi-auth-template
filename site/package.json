@@ -1,0 +1,35 @@
+{
+  "name": "template-site",
+  "private": true,
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "^13.5.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "iron-session": "^6.3.1",
+    "swr": "^2.2.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.6",
+    "@typescript-eslint/eslint-plugin": "^6.7.5",
+    "@typescript-eslint/eslint-plugin-tslint": "^6.7.5",
+    "@typescript-eslint/parser": "^6.7.5",
+    "autoprefixer": "^10.4.16",
+    "cssnano": "^6.0.1",
+    "eslint": "^8.51.0",
+    "eslint-config-next": "^13.5.4",
+    "postcss": "^8.4.31",
+    "prettier": "^3.0.3",
+    "prettier-plugin-tailwindcss": "^0.5.6",
+    "tailwindcss": "^3.3.3",
+    "typescript": "^5.2.2"
+  },
+  "resolutions": {
+    "@types/react": "<18.0.0",
+    "@types/react-dom": "<18.0.0"
+  }
+}
