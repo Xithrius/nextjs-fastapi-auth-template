@@ -59,10 +59,10 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Install Node v20
+    - name: Install Node v21
       uses: actions/setup-node@v2
       with:
-        node-version: 20
+        node-version: 21
 
     - name: Install dependencies
       working-directory: ${{ matrix.dir }}

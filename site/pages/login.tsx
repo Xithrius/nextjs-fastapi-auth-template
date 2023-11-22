@@ -1,83 +1,51 @@
-import { title } from "@/components/primitives";
-import DefaultLayout from "@/layouts/default";
-import fetchJson from "@/lib/fetchJson";
-import useUser from "@/lib/useUser";
-import { Button, Input } from "@nextui-org/react";
-import { Controller, useForm } from "react-hook-form";
+import Link from "next/link";
 
-export default function IndexPage() {
-  const { mutateUser } = useUser({
-    redirectTo: "/profile-sg",
-    redirectIfFound: true,
-  });
+import Head from "next/head";
+import { Form } from "@/components/form";
 
-  const { control, handleSubmit } = useForm({
-    defaultValues: {
-      email: "",
-      password: "",
-    },
-  });
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onSubmit = async (data: any) => {
-    const body = {
-      email: data.email,
-      password: data.password,
-    };
-
-    mutateUser(
-      await fetchJson("/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      })
-    );
-  };
-
+export default function AppRouterSWR() {
   return (
-    <DefaultLayout>
-      <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
-        <div className="inline-block max-w-lg justify-center text-center">
-          <h1 className={title()}>Login</h1>
+    <main className="p-10 space-y-5">
+      <Head>
+        <title>
+          🛠 iron-session examples: Pages Router, API routes, and SWR
+        </title>
+      </Head>
 
-          <div className="mt-8">
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <Controller
-                name="email"
-                control={control}
-                render={({ field }) => (
-                  <Input
-                    variant="faded"
-                    type="email"
-                    label="Email"
-                    {...field}
-                  />
-                )}
-              />
-              <Controller
-                name="password"
-                control={control}
-                render={({ field }) => (
-                  <Input
-                    className="my-4"
-                    variant="faded"
-                    type="password"
-                    label="Password"
-                    {...field}
-                  />
-                )}
-              />
-              <Button
-                type="submit"
-                radius="full"
-                className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg"
-              >
-                Login
-              </Button>
-            </form>
-          </div>
+      <p className="italic max-w-xl">
+        <u>How to test</u>: Login and refresh the page to see iron-session in
+        action. Bonus: open multiple tabs to see the state being reflected by
+        SWR automatically.
+      </p>
+
+      <div className="grid grid-cols-1 gap-4 p-10 border border-slate-500 rounded-md max-w-xl">
+        <Form />
+        <div className="space-y-2">
+          <hr />
+          <p>
+            The following pages are protected and will redirect back here if
+            you&apos;re not logged in:
+          </p>
+          {/* convert the following paragraphs into a ul li */}
+          <ul className="list-disc list-inside">
+            <li>
+              <Link href="/pages-router-api-route-swr/protected-client">
+                Protected page via client call →
+              </Link>
+            </li>
+            <li>
+              <Link href="/pages-router-api-route-swr/protected-server">
+                Protected page via getServerSideProps →
+              </Link>{" "}
+            </li>
+            <li>
+              <Link href="/pages-router-api-route-swr/protected-middleware">
+                Protected page via middleware →
+              </Link>{" "}
+            </li>
+          </ul>
         </div>
-      </section>
-    </DefaultLayout>
+      </div>
+    </main>
   );
 }
