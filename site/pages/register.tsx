@@ -1,43 +1,14 @@
 "use client";
 
-import { Link } from "@nextui-org/link";
-import { siteConfig } from "@/config/site";
-import { ThemeSwitch } from "@/components/theme-switch";
-import {
-  EyeFilledIcon,
-  EyeSlashFilledIcon,
-  GithubIcon,
-} from "@/components/icons";
+import { EyeFilledIcon, EyeSlashFilledIcon } from "@/components/icons";
 import toast from "react-hot-toast";
 import { Button, Input } from "@nextui-org/react";
-import { Head } from "@/layouts/head";
 import { useState } from "react";
 import useSession from "@/lib/use-session";
 import Router from "next/router";
 import axios from "axios";
-
-const ThemeSwitcherAndGithub = () => (
-  <div className="absolute right-8 top-8">
-    <Link
-      isExternal
-      href={siteConfig.links.github}
-      aria-label="Github"
-      className="mr-2"
-    >
-      <GithubIcon className="text-default-500" />
-    </Link>
-    <ThemeSwitch />
-  </div>
-);
-
-const DefaultLayout = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <div className="relative flex h-screen flex-col">
-      <Head />
-      <main className="container mx-auto flex-grow px-6">{children}</main>
-    </div>
-  );
-};
+import DefaultLayout from "@/layouts/default";
+import { title } from "@/components/primitives";
 
 const Register = () => {
   const { login } = useSession();
@@ -69,7 +40,7 @@ const Register = () => {
         </button>
       }
       type={isPasswordVisible ? "text" : "password"}
-      className="max-w-xs"
+      className="max-w-xs my-2"
     />
   );
 
@@ -118,7 +89,7 @@ const Register = () => {
   );
 
   return (
-    <div className="mt-20 flex flex-col items-center justify-center gap-6">
+    <div className="mt-6 flex flex-col items-center justify-center">
       {emailInput}
       {passwordInput}
       <RegisterButton />
@@ -129,9 +100,9 @@ const Register = () => {
 export default function RegisterPage() {
   return (
     <DefaultLayout>
-      <section className="flex flex-col items-center justify-center p-8 md:py-10">
+      <section className="flex flex-col items-center justify-center p-8">
+        <h1 className={title()}>Register</h1>
         <Register />
-        <ThemeSwitcherAndGithub />
       </section>
     </DefaultLayout>
   );
