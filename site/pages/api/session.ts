@@ -58,7 +58,7 @@ export default async function handler(
 
       return response.json(session);
     } catch (error) {
-      return response.status(400).end("Bad credentials");
+      return response.status(400).json({ message: "Bad credentials" });
     }
   } else if (request.method === "GET") {
     if (session.isLoggedIn !== true) {

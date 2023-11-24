@@ -1,7 +1,98 @@
 import Link from "next/link";
 
 import Head from "next/head";
-import { Form } from "@/components/form";
+import useSession from "@/lib/use-session";
+import { defaultSession } from "@/lib/lib";
+import { Controller, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { Button, Input } from "@nextui-org/react";
+
+export function Form() {
+  const { session, isLoading } = useSession();
+
+  if (isLoading) {
+    return <p className="text-lg">Loading...</p>;
+  }
+
+  if (session.isLoggedIn) {
+    return (
+      <>
+        <p className="text-lg">
+          Logged in user: <strong>{session.email}</strong>
+        </p>
+        <LogoutButton />
+      </>
+    );
+  }
+
+  return <LoginForm />;
+}
+
+
+
+function LoginForm() {
+  const { login } = useSession();
+
+  const { control, handleSubmit } = useForm({
+    defaultValues: { email: "", password: "" },
+  });
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const onSubmit = async (data: any) => {
+    const { email, password } = data;
+
+    const response = await login({ email: email, password: password });
+
+    if (response.access_token === undefined) {
+      toast.error("Login credentials failed");
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} method="POST">
+      <Controller
+        name="email"
+        control={control}
+        render={({ field }) => (
+          <Input variant="faded" type="email" label="Email" {...field} />
+        )}
+      />
+      <Controller
+        name="password"
+        control={control}
+        render={({ field }) => (
+          <Input variant="faded" type="password" label="Password" {...field} />
+        )}
+      />
+      <Button
+        type="submit"
+        radius="full"
+        className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg"
+      >
+        Login
+      </Button>
+    </form>
+  );
+}
+
+function LogoutButton() {
+  const { logout } = useSession();
+
+  return (
+    <p>
+      <a
+        onClick={(event) => {
+          event.preventDefault();
+          logout(null, {
+            optimisticData: defaultSession,
+          });
+        }}
+      >
+        Logout
+      </a>
+    </p>
+  );
+}
 
 export default function AppRouterSWR() {
   return (
