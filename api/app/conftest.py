@@ -2,6 +2,9 @@ from collections.abc import AsyncGenerator
 from typing import Any
 
 import pytest
+from app.database.dependencies import get_db_session
+from app.database.utils import create_database, drop_database
+from app.routers.application import get_app
 from fastapi import FastAPI
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import (
@@ -10,11 +13,7 @@ from sqlalchemy.ext.asyncio import (
     async_sessionmaker,
     create_async_engine,
 )
-
-from app.database.dependencies import get_db_session
-from app.database.utils import create_database, drop_database
-from app.settings import settings
-from app.routers.application import get_app
+from testcontainers.postgres import PostgresContainer
 
 
 @pytest.fixture(scope="session")
@@ -39,9 +38,14 @@ async def _engine() -> AsyncGenerator[AsyncEngine, None]:
 
     load_all_models()
 
-    await create_database()
+    postgres = PostgresContainer("postgres:15-alpine", driver="psycopg")
+    postgres.start()
 
-    engine = create_async_engine(str(settings.db_url))
+    url = postgres.get_connection_url()
+
+    await create_database(url)
+
+    engine = create_async_engine(url)
     async with engine.begin() as conn:
         await conn.run_sync(meta.create_all)
 
@@ -49,7 +53,8 @@ async def _engine() -> AsyncGenerator[AsyncEngine, None]:
         yield engine
     finally:
         await engine.dispose()
-        await drop_database()
+        await drop_database(url)
+        postgres.stop()
 
 
 @pytest.fixture
@@ -105,6 +110,7 @@ async def client(
     Fixture that creates client for requesting server.
 
     :param fastapi_app: the application.
+    :param anyio_backend: the anyio backend
     :yield: client for the app.
     """
     async with AsyncClient(app=fastapi_app, base_url="http://test") as ac:

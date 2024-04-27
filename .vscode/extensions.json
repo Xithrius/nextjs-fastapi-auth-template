@@ -2,7 +2,6 @@
   "recommendations": [
     "ms-python.python",
     "charliermarsh.ruff",
-    "ms-python.isort",
     "bradlc.vscode-tailwindcss",
     "esbenp.prettier-vscode",
     "christian-kohler.npm-intellisense",

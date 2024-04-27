@@ -12,42 +12,53 @@ concurrency:
 
 jobs:
   api-ci:
+    name: API CI
+
     runs-on: ubuntu-latest
 
     strategy:
-      fail-fast: false
-
-      matrix: {dir: ["api"]}
+      matrix:
+        directory: ["api"]
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: Set up Python 3.11
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v5
       with:
         python-version: "3.11"
         cache: "pip"
-        cache-dependency-path: "${{ matrix.dir }}/pyproject.toml"
+        cache-dependency-path: "${{ matrix.directory }}/pyproject.toml"
 
     - name: Set up PDM
-      uses: pdm-project/setup-pdm@v2
+      uses: pdm-project/setup-pdm@v4
       with:
         python-version: "3.11"
 
     - name: Install dependencies
-      working-directory: ${{ matrix.dir }}
+      working-directory: ${{ matrix.directory }}
       run: pdm sync
 
     - name: Run lints
-      working-directory: ${{ matrix.dir }}
+      working-directory: ${{ matrix.directory }}
       run: pdm lint
 
-    # - name: Run tests
-    #   working-directory: ${{ matrix.dir }}
-    #   run: pdm test
+    - name: Run tests with coverage
+      working-directory: ${{ matrix.directory }}
+      # Uncomment if using codecov or some other coverage tracking medium
+      # run: pdm test-cov
+      run: pdm test
+
+    # - name: Upload coverage to Codecov
+    #   uses: codecov/codecov-action@v4
+    #   with:
+    #     token: ${{ secrets.CODECOV_TOKEN }}
+    #     files: ./${{ matrix.directory }}/coverage.xml
 
   site-ci:
+    name: Site CI
+
     runs-on: ubuntu-latest
 
     strategy:
